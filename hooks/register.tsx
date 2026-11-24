@@ -60,10 +60,7 @@ export const register: Register = on => {
       argumentHint: `[${NAMES.join('|')}]`,
     })
     const saved = await $.store.get('tema')
-    const set = await apply($, typeof saved === 'string' && saved in TEMAS ? saved : DEFAULT)
-    if (!set.isDrawn) {
-      $.ui.status(set.reason)
-    }
+    await apply($, typeof saved === 'string' && saved in TEMAS ? saved : DEFAULT)
     return next(e)
   })
 
@@ -78,7 +75,7 @@ export const register: Register = on => {
     }
     await $.store.set('tema', name)
     const set = await apply($, name)
-    return { text: set.isDrawn ? `Tema ${name} aplicado.` : `Tema ${name} guardado; esta superficie no dibuja temas (${set.reason}).` }
+    return { text: set.isDrawn ? `Tema ${name} aplicado.` : `Tema ${name} guardado. Se verá en la app de escritorio o la móvil; la terminal no dibuja temas.` }
   })
 
   on('ui.render', { component: 'Backdrop' }, ($, e, next) => {
